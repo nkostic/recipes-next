@@ -1,3 +1,7 @@
+## Recipes App
+
+This is small app for managing personal food recipes. It is a simple CRUD app with a few features. It is built with Next.js, TypeScript, and Shadcn UI (Radix and Tailwind CSS). It uses uses the simple backend created with bun runtime using ElysiaJS and Sqlite. The backend repo [Recipes-Elysia](https://github.com/nkostic/recipes-elysia)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
