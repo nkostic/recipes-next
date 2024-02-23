@@ -4,6 +4,12 @@ This is small app for managing personal food recipes. It is a simple CRUD app wi
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Environment Variables
+
+copy paste the `.env.local.example` file to `.env.local` and fill in the values for the environment variables.
+
+```bash
+
 ## Getting Started
 
 First, run the development server:

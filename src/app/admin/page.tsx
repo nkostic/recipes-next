@@ -12,9 +12,9 @@ export default function RecipesPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const result: any = await fetch("http://localhost:3000/recipe/list").then(
-        (res) => res.json()
-      );
+      const result: any = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/recipe/list`
+      ).then((res) => res.json());
       console.log("result", result);
       setData(result);
     }

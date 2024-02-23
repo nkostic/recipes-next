@@ -34,14 +34,27 @@ export default function NewRecipe() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("on submit values", values);
-    const result = await fetch("http://localhost:3000/recipe/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
-    console.log("result", result);
+    try {
+      const result = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/recipe/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (result.status === 500) {
+        console.error("Server error");
+        return;
+      }
+
+      console.log("result", result);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
   }
 
   return (
