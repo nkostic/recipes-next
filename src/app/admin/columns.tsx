@@ -50,7 +50,7 @@ export const columns: ColumnDef<Recipe>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} name="Name" />
     ),
     cell: ({ row }) => {
       const formatted = `${row.getValue("name")}`;
@@ -75,9 +75,15 @@ export const columns: ColumnDef<Recipe>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={(who) => console.log("view", who)}>
+              View
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(who) => console.log("edit", who)}>
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={(who) => console.log("delete", who)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
