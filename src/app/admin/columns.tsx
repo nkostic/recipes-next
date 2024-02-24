@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
+import { Alert } from "@/components/alert";
 // This interface is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export interface Recipe {
@@ -22,6 +23,44 @@ export interface Recipe {
   instructions?: string;
   status?: string;
   image?: string;
+}
+
+async function removeItem(id: string) {
+  try {
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/recipe/delete/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (result.status === 500) {
+      console.error("Server error");
+      return;
+    }
+
+    console.log("result", result);
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+}
+
+const handleDelete = (id: string) => {
+  console.log("delete", id);
+  return (
+    <Alert
+      onCancel={() => console.log("cancel")}
+      onConfirm={() => removeItem(id)}
+    />
+  );
+};
+
+function handleEdit(id: string) {
+  console.log("edit", id);
+}
+
+function handleView(id: string) {
+  console.log("view", id);
 }
 
 export const columns: ColumnDef<Recipe>[] = [
@@ -63,7 +102,7 @@ export const columns: ColumnDef<Recipe>[] = [
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -75,13 +114,13 @@ export const columns: ColumnDef<Recipe>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={(who) => console.log("view", who)}>
+            <DropdownMenuItem onClick={() => handleView(row.id)}>
               View
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={(who) => console.log("edit", who)}>
+            <DropdownMenuItem onClick={() => handleEdit(row.id)}>
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={(who) => console.log("delete", who)}>
+            <DropdownMenuItem onClick={() => handleDelete(row.id)}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
