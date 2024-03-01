@@ -29,8 +29,7 @@ export const Alert: React.FC<AlertProps> = ({ onCancel, onConfirm }) => {
     }
   };
   return (
-    <AlertDialog defaultOpen={true} open={true}>
-      <AlertDialogTrigger asChild={true}>Open</AlertDialogTrigger>
+    <AlertDialog open={true}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

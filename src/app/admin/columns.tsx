@@ -1,4 +1,3 @@
-"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
@@ -11,56 +10,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-column-header";
-import { Alert } from "@/components/alert";
+import { DataTableColumnHeader } from "../../components/data-table-column-header";
 // This interface is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export interface Recipe {
-  id?: number;
+  id?: string;
   name: string;
   description?: string;
   ingredients?: string;
   instructions?: string;
   status?: string;
   image?: string;
-}
-
-async function removeItem(id: string) {
-  try {
-    const result = await fetch(
-      `${process.env.NEXT_PUBLIC_API_HOST}/recipe/delete/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (result.status === 500) {
-      console.error("Server error");
-      return;
-    }
-
-    console.log("result", result);
-  } catch (error) {
-    console.error("Fetch error:", error);
-  }
-}
-
-const handleDelete = (id: string) => {
-  console.log("delete", id);
-  return (
-    <Alert
-      onCancel={() => console.log("cancel")}
-      onConfirm={() => removeItem(id)}
-    />
-  );
-};
-
-function handleEdit(id: string) {
-  console.log("edit", id);
-}
-
-function handleView(id: string) {
-  console.log("view", id);
 }
 
 export const columns: ColumnDef<Recipe>[] = [
@@ -102,7 +62,8 @@ export const columns: ColumnDef<Recipe>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ table, row }) => {
+      const recipe: Recipe = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -114,13 +75,19 @@ export const columns: ColumnDef<Recipe>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleView(row.id)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleView(recipe.id)}
+            >
               View
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleEdit(row.id)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleEdit(recipe.id)}
+            >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(row.id)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleDelete(recipe.id)}
+            >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
