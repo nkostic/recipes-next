@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-// import { Recipe } from "../admin/columns";
 import Menu from "@/components/menu";
 
 const formSchema = z.object({
@@ -23,8 +21,12 @@ const formSchema = z.object({
     message: "name must be at least 2 characters.",
   }),
 });
-// todo redirect to view recipe page once the recipe is created
-export default function NewRecipe() {
+
+// todo redirect to view recipe page once the recipe is updated
+// toast icon success
+
+export default function UpdateRecipe({ params }) {
+  const { id } = params;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,11 +34,22 @@ export default function NewRecipe() {
     },
   });
 
+  useEffect(() => {
+    async function fetchData() {
+      const result: any = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/recipe/${id}`
+      ).then((res) => res.json());
+      console.log("result", result);
+    }
+
+    fetchData();
+  }, []);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("on submit values", values);
     try {
       const result = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/recipe/create`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/recipe/update`,
         {
           method: "POST",
           headers: {
@@ -78,7 +91,7 @@ export default function NewRecipe() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Submit {id}</Button>
           </form>
         </Form>
       </main>

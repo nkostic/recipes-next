@@ -1,4 +1,3 @@
-"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
@@ -11,11 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableColumnHeader } from "../../components/data-table-column-header";
 // This interface is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export interface Recipe {
-  id?: number;
+  id?: string;
   name: string;
   description?: string;
   ingredients?: string;
@@ -63,7 +62,8 @@ export const columns: ColumnDef<Recipe>[] = [
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ table, row }) => {
+      const recipe: Recipe = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -75,13 +75,19 @@ export const columns: ColumnDef<Recipe>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={(who) => console.log("view", who)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleView(recipe.id)}
+            >
               View
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={(who) => console.log("edit", who)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleEdit(recipe.id)}
+            >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={(who) => console.log("delete", who)}>
+            <DropdownMenuItem
+              onClick={() => table?.options?.meta?.handleDelete(recipe.id)}
+            >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

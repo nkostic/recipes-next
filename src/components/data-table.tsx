@@ -27,11 +27,17 @@ import { DataTableViewOptions } from "./data-table-view-options";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onDelete: () => (id: string) => void;
+  onEdit: () => (id: string) => void;
+  onView: () => (id: string) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onDelete,
+  onEdit,
+  onView,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -51,6 +57,11 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    meta: {
+      handleDelete: onDelete(),
+      handleEdit: onEdit(),
+      handleView: onView(),
+    },
     state: {
       sorting,
       columnFilters,
